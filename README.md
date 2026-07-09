@@ -1,2 +1,7 @@
-# fastapi_non_imageboard
-fastapi sqlite core
+# fastapi_textboard
+
+
+
+### * --python 3.14
+### * --fastapi
+### * --aiosqlite
