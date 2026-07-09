@@ -23,10 +23,10 @@ async def init_db():
         await db.execute("""
                          CREATE TABLE IF NOT EXISTS threads
                          (
-                             id       INTEGER PRIMARY KEY AUTOINCREMENT,
-                             board_id INTEGER NOT NULL,
+                             id         INTEGER PRIMARY KEY AUTOINCREMENT,
+                             board_id   INTEGER NOT NULL,
                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                             title    TEXT NOT NULL,
+                             title      TEXT    NOT NULL,
                              FOREIGN KEY (board_id) REFERENCES boards (id) ON DELETE CASCADE
                          )
                          """)
