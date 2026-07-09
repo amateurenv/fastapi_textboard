@@ -2,6 +2,6 @@
 
 
 
-### * --python 3.14
-### * --fastapi
-### * --aiosqlite
+* ### --python 3.14
+* ### --fastapi
+* ### --aiosqlite
