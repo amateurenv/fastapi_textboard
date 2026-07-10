@@ -3,25 +3,19 @@ from fastapi import APIRouter, Depends
 
 from auth import verify_admin
 from database import get_db
+from schemas import ThreadCreate
+from services import threads as thread_service
 
 router = APIRouter(prefix="/threads", tags=["Threads"])
 
-
 @router.get("/{board_url}")
 async def get_threads(board_url: str, db: aiosqlite.Connection = Depends(get_db)):
-    async with db.execute("SELECT * FROM threads WHERE board_url = ?", (board_url,)) as cursor:
-        return [dict(row) for row in await cursor.fetchall()]
-
+    return await thread_service.get_by_board(db, board_url)
 
 @router.post("/{board_url}")
-async def create_thread(board_url: str, title: str, db: aiosqlite.Connection = Depends(get_db)):
-    await db.execute("INSERT INTO threads (board_url, title) VALUES (?, ?)", (board_url, title))
-    await db.commit()
-    return {"message": "Тред создан"}
-
+async def create_thread(board_url: str, thread: ThreadCreate, db: aiosqlite.Connection = Depends(get_db)):
+    return await thread_service.create(db, board_url, thread)
 
 @router.delete("/{thread_id}")
 async def delete_thread(thread_id: int, db: aiosqlite.Connection = Depends(get_db), admin: str = Depends(verify_admin)):
-    await db.execute("DELETE FROM threads WHERE id = ?", (thread_id,))
-    await db.commit()
-    return {"message": "Тред удален"}
+    return await thread_service.delete(db, thread_id)
