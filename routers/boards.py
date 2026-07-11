@@ -3,12 +3,12 @@ from fastapi import APIRouter, Depends
 
 from auth import verify_admin
 from database import get_db
-from schemas import BoardCreate
+from schemas import BoardCreate, BoardResponse
 from services import boards as board_service
 
 router = APIRouter(prefix="/boards", tags=["Boards"])
 
-@router.get("/")
+@router.get("/", response_model=list[BoardResponse])
 async def get_boards(db: aiosqlite.Connection = Depends(get_db)):
     return await board_service.get_all(db)
 
